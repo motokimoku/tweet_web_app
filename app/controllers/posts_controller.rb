@@ -1,4 +1,7 @@
 class PostsController < ApplicationController
+
+  before_action :authenticate_user,{only: [:index, :show, :edit, :update]}
+  
   def index
     @posts = Post.all.order(created_at: :desc)
   end
@@ -12,13 +15,13 @@ class PostsController < ApplicationController
   end
   
   def create
-     @post = Post.new(content: params[:content])
-      if @post.save
-        flash[:notice] = "投稿を作成しました"
-        redirect_to("/posts/index")
-      else
-        render("posts/new")
-      end
+    @post = Post.new(content: params[:content])
+    if @post.save
+      flash[:notice] = "投稿を作成しました"
+      redirect_to("/posts/index")
+    else
+      render("posts/new")
+    end
   end
   
   def edit
@@ -29,8 +32,8 @@ class PostsController < ApplicationController
     @post = Post.find_by(id: params[:id])
     @post.content = params[:content]
     if @post.save
-       flash[:notice] = "投稿を編集しました"
-       redirect_to("/posts/index")
+      flash[:notice] = "投稿を編集しました"
+      redirect_to("/posts/index")
     else
       render("posts/edit")
     end
@@ -38,10 +41,9 @@ class PostsController < ApplicationController
   
   def destroy
     @post = Post.find_by(id: params[:id])
-    if @post.destroy
-       flash[:notice] = "投稿を削除しました"
-       redirect_to("/posts/index")
-    end
+    @post.destroy
+    flash[:notice] = "投稿を削除しました"
+    redirect_to("/posts/index")
   end
   
 end
