@@ -10,19 +10,18 @@
     
     <ul class="user-tabs">
       <li><%= link_to("投稿", "/users/#{@user.id}") %></li>
-      <li class="active"><%= link_to("いいね!", "/users/#{@user.id}/likes") %></li>
-      <li><%= link_to("フォロー", "/users/#{@user.id}/relations") %></li>
+      <li><%= link_to("いいね!", "/users/#{@user.id}/likes") %></li>
+      <li class="active"><%= link_to("フォロー", "/users/#{@user.id}/relations") %></li>
     </ul>
 
-    <% @likes.each do |like| %>
-      <% post = Post.find_by(id: like.post_id) %>
+    <% @relations.each do |relation| %>
+      <% follow = User.find_by(id: relation.follow_id) %>
       
       <div class="posts-index-item">
         <div class="post-right">
           <div class="post-user-name">
-            <%= link_to(post.user.name, "/users/#{post.user.id}") %>
-          </div>
-          <%= link_to(post.content, "/posts/#{post.id}") %>
+            <%= link_to(follow.name, "/users/#{follow.id}") %>
+            </div>
         </div>
       </div>
     <% end %>
